@@ -1,17 +1,133 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
+  <ion-toolbar color="primary">
+    
+    <ion-title style="text-align: center;">
+      Processed Document(s)
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xs=0  size-s=0 size-md=4></ion-col>
+      <ion-col size-xs=12 size-s=12 size-md=4>
+  <div *ngFor="let party of output">
+    <ion-item *ngIf="Tamount(party) != 0">
+      <ion-label>Party: {{party}}</ion-label>
+      <p>Amount: ₹ {{Tamount(party)}}</p>
+    </ion-item>
+    <ion-card *ngFor="let doc of filteredData(party)">
+      
+    
+      <ion-card-content>
+        <ion-item>
+          <ion-avatar slot="start">
+            <a *ngIf="doc[11] != 'Not Provided'" href="{{doc[11]}}" target="_blank"><img src="{{doc[11]}}" ></a>
+  
+            <a *ngIf="doc[9] != 'Not Provided'" href="{{doc[9]}}" target="_blank"><ion-icon  name="document-text-outline" style="padding-right:10px;" size="large"></ion-icon></a>
+            <ion-icon *ngIf="doc[9] == 'Not Provided' && doc[11] == 'Not Provided'" name="close-circle-outline" style="padding-right:10px;" size="large"></ion-icon>
+          </ion-avatar>
+          <ion-label>{{doc[7]}} </ion-label>
+          <p>{{doc[22].toUpperCase()}}</p>
+        </ion-item>
+        
+       
+        <ion-item>
+          <ion-label >Amount (in Rupees):</ion-label>
+  
+          <p style="padding:5px;">₹ {{doc[27]}}</p>
+        </ion-item>
+       
+  
+  
+       
+      </ion-card-content>
+    </ion-card>
+  </div>
+  
+  
+  
+  <ion-card *ngIf="finalDataSale==[] && finalDataPurchase==[]">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">No Processed Document</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="text-align: center;">Swipe down to refresh</ion-card-content>
+  </ion-card>
+  <!-- <div *ngIf="finalDataSale">
+    <p style="color: grey;padding-left:5%">Processed Sale Document(s)</p>
+  </div>  -->
+   <ion-card *ngFor="let doc of finalDataSale">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">{{doc[26]}}</ion-card-title>
+      <ion-card-subtitle style="text-align: center;">{{doc[27]}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Invoice Type</ion-label>
+        <p>Sale</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Document Unique ID</ion-label>
+        <p>{{doc[0]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Company Name</ion-label>
+        <p>{{doc[1]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Type of Document</ion-label>
+        <p>{{doc[5]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Date of Submission</ion-label>
+        <p>{{doc[7]}}</p>
+      </ion-item>
+      
+    </ion-card-content>
+  </ion-card>
+ 
+    <ion-card *ngFor="let doc of finalDataPurchase">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">{{doc[26]}}</ion-card-title>
+      <ion-card-subtitle style="text-align: center;">{{doc[27]}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Invoice Type</ion-label>
+        <p>Purchase</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Document Unique ID</ion-label>
+        <p>{{doc[0]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Company Name</ion-label>
+        <p>{{doc[1]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Type of Document</ion-label>
+        <p>{{doc[5]}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Date of Submission</ion-label>
+        <p>{{doc[7]}}</p>
+      </ion-item>
+      
+    </ion-card-content>
+  </ion-card>
+  </ion-col>
+  </ion-row>
+  </ion-grid>
+ 
 
   <app-explore-container name="Tab 3 page"></app-explore-container>
 </ion-content>

@@ -1,0 +1,54 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title style="text-align: center;">
+      Legully Expenses App
+        </ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xs=0 size-s=0 size-md=4 size-l=4></ion-col>
+      <ion-col size-s=12 size-md=4 size-l=4>
+        <ion-card style="margin-top:30%">
+          <ion-card-header>
+          <ion-card-title style="text-align: center;">Login</ion-card-title>
+          </ion-card-header>
+      
+          <ion-card-content>
+            <ion-list>
+              <ion-item>
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input [(ngModel)]="email" type="text"></ion-input>
+              </ion-item>
+      
+             
+      
+              <ion-item>
+                <ion-label position="stacked">Password</ion-label>
+                <ion-input [(ngModel)]="password" type="password"></ion-input>
+              </ion-item>
+      
+            
+      
+              
+            </ion-list>
+          </ion-card-content>
+      
+        </ion-card>
+        <ion-button expand="block" shape="round" color="primary" (click)="login()" style="text-transform: capitalize;">Employee Login</ion-button>
+        <ion-button expand="block" shape="round" color="warning" (click)="loginCompany()" style="text-transform: capitalize;">Company Login</ion-button>
+           
+        <div style="padding: 20px; text-align: center;">
+          <a (click)="forgot()">Forgot password?</a>
+          <br>
+        </div>
+      
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+</ion-content>

@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    
+    <ion-title style="text-align: center;">
+      All Other Document(s)
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xs=0  size-s=0 size-md=4></ion-col>
+      <ion-col size-s=12 size-md=4>
+  
+  <ion-card *ngIf="finalData==[]">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">No Document</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="text-align: center;">Swipe down to refresh</ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let doc of finalData">
+    
+    <ion-card-content>
+      <ion-item>
+        <ion-avatar slot="start">
+          <a *ngIf="doc[11] != 'Not Provided'" href="{{doc[11]}}" target="_blank"><img src="{{doc[11]}}" ></a>
+  
+          <a *ngIf="doc[9] != 'Not Provided'" href="{{doc[9]}}" target="_blank"><ion-icon  name="document-text-outline" style="padding-right:10px;" size="large"></ion-icon></a>
+          <ion-icon *ngIf="doc[9] == 'Not Provided' && doc[11] == 'Not Provided'" name="close-circle-outline" style="padding-right:10px;" size="large"></ion-icon>
+
+        </ion-avatar>
+        <ion-label>{{doc[7]}} </ion-label>
+        <p>{{doc[22].toUpperCase()}}</p>
+      </ion-item>
+      
+     
+      <ion-item>
+        <ion-label position="stacked">Type of Document</ion-label>
+
+        <p>{{doc[5] || 'Not Provided'}}</p>
+      </ion-item>
+     
+
+
+     
+    </ion-card-content>
+  </ion-card>
+  </ion-col>
+  </ion-row>
+  </ion-grid>
+
+  
+
+  <app-explore-container name="Tab 5 page"></app-explore-container>
+</ion-content>

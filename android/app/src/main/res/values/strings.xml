@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Legully Expenses</string>
+    <string name="title_activity_main">Legully Expenses</string>
+    <string name="package_name">com.expenses.aarc</string>
+    <string name="custom_url_scheme">com.expenses.aarc</string>
+</resources>

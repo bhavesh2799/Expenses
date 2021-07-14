@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "173748306826",
+    "project_id": "legully-expense-app",
+    "storage_bucket": "legully-expense-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173748306826:android:15ece5f01b1769455afe73",
+        "android_client_info": {
+          "package_name": "com.expenses.aarc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173748306826-l78q522250bbl21btqa7a9muahi5hkt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAthoVZ2i1eaCbQRlf1eKvR6cDDbb3FXeA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173748306826-l78q522250bbl21btqa7a9muahi5hkt6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

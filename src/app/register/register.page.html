@@ -1,0 +1,118 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" >
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Welcome {{userData.name.split(' ')[0] || 'Admin'}} !
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size=4></ion-col>
+      <ion-col size=4>
+        <ion-card *ngIf="userData.isSuperAdmin">
+          <ion-card-header>
+            <ion-card-title style="text-align: center;">Register Company</ion-card-title>
+        
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="stacked">Company Name</ion-label>
+              <ion-input style="text-transform: uppercase;" type="text" [(ngModel)]="companyData.name"></ion-input>
+            </ion-item>
+          
+            <ion-item>
+              <ion-label position="stacked">Maximum Employees Threshold</ion-label>
+              <ion-input type="number" [(ngModel)]="companyData.maxEmployees"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input type="text"[(ngModel)]="companyData.email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Password</ion-label>
+              <ion-input type="password" [(ngModel)]="companyData.password"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Confirm Password</ion-label>
+              <ion-input [(ngModel)]="companyData.confirmPassword" type="password" (ionChange)="checkPasswordCompany()"></ion-input>
+              <ion-text *ngIf='companyData.password && !passwordMatch' color='danger'>Password do not match!</ion-text>
+              <ion-text *ngIf='companyData.password && passwordMatch' color='success'>Password match</ion-text>
+            </ion-item>
+            <ion-item >
+              <ion-label position="stacked">Type of Documents</ion-label>
+              <ionic-selectable
+              [isMultiple]="true"
+                item-content 
+                [(ngModel)]="port"
+                [items]="ports"
+                itemValueField="id"
+                itemTextField="name"
+                [canSearch]="true"
+                (onChange)="portChange($event)">
+              </ionic-selectable>
+            </ion-item>
+        
+          </ion-card-content>
+        
+        </ion-card>
+        <ion-button *ngIf="userData.isSuperAdmin" style="text-transform: capitalize;" [disabled]='!passwordMatch || !companyData.name' expand="block" shape="round" color="primary" (click)="registerCompany()">Register Company</ion-button>
+      
+        <ion-card>
+          <ion-card-header>
+          <ion-card-title style="text-align: center;">Register User</ion-card-title>
+      
+          </ion-card-header>
+      
+          <ion-card-content>
+      
+            <ion-list>
+              <ion-item *ngIf="userData.isSuperAdmin">
+                <ion-label position="stacked">Company Name</ion-label>
+                <ion-input style="text-transform: uppercase;" [(ngModel)]="userData.companyName" type="text"></ion-input>
+              </ion-item>
+              
+              <ion-item>
+                <ion-label position="stacked">User Name</ion-label>
+                <ion-input [(ngModel)]="name" type="text"></ion-input>
+              </ion-item>
+      
+              <ion-item>
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input [(ngModel)]="email" type="text"></ion-input>
+              </ion-item>
+      
+              <ion-item>
+                <ion-label position="stacked">Password</ion-label>
+                <ion-input [(ngModel)]="password" type="password"></ion-input>
+              </ion-item>
+      
+              <ion-item>
+                <ion-label position="stacked">Confirm Password</ion-label>
+                <ion-input [(ngModel)]="confirmPassword" type="password" (ionChange)="checkPassword()"></ion-input>
+                <ion-text *ngIf='password && !passwordMatch' color='danger'>Password do not match!</ion-text>
+                <ion-text *ngIf='password && passwordMatch' color='success'>Password match</ion-text>
+              </ion-item>
+              
+      
+              
+            </ion-list>
+          </ion-card-content>
+      
+        </ion-card>
+        <ion-button style="text-transform: capitalize;" [disabled]='!passwordMatch || !name' expand="block" shape="round" color="primary" (click)="register()">Register User</ion-button>
+      
+        <div style="padding: 20px; text-align: center;">
+          
+          <p><a (click)="redirectLogin()">Go to Login</a></p>
+        </div>
+      
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>

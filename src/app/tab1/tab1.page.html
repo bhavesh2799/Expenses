@@ -1,17 +1,178 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
+  <ion-toolbar color="primary">
+    <ion-title style="text-align: center;">
+      {{userData.companyName}}
     </ion-title>
   </ion-toolbar>
+  
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xs=0 size-s=0 size-md=4></ion-col>
+      <ion-col size-s=12 size-md=4>
+    <ion-card>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Expense Document Available</ion-label>
+          <ion-toggle [(ngModel)]="todo.expenseDoc" name="expenseDoc"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="todo.expenseDoc">
+          <ion-label position="stacked"><a style="color:red;">*</a>Type of Document</ion-label>
+          <ionic-selectable
+            item-content 
+            [(ngModel)]="port"
+            [items]="ports"
+            itemValueField="id"
+            itemTextField="name"
+            [canSearch]="true"
+            (onChange)="portChange($event)">
+          </ionic-selectable>
+        </ion-item>
+        
+        
+        <ion-item>
+          <ion-label position="stacked"><a style="color:red;">*</a>Date of Document</ion-label>
+          <ion-datetime [(ngModel)]="todo.date" name="date" displayFormat="DD-MM-YYYY" ></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked"><a style="color:red;">*</a>Date of Submitting</ion-label>
+          <ion-input disabled [(ngModel)]="todo.dateToday" name="dateToday" value="dateToday" ></ion-input>
+        </ion-item>
+       
+        <ion-item *ngIf="!todo.expenseDoc">
+          <ion-label position="stacked"><a style="color:red;">*</a>Amount (in Rupees)</ion-label>
+          <ion-input type="number" [(ngModel)]="todo.amount" name="amount"></ion-input>
+        </ion-item>
+        
+    
+        
+        <ion-item>
+          <ion-label position="stacked">Narration</ion-label>
+          <ion-textarea [(ngModel)]="todo.narration" name="narration"></ion-textarea>
+        </ion-item>
+       
+        <ion-segment *ngIf="todo.expenseDoc" (ionChange)="segmentChanged2($event)" [(ngModel)]="todo.format" name="format">
+          <ion-segment-button value="PDF">
+            <ion-label>PDF</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Image">
+            <ion-label>Images</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <ion-progress-bar [value]="uploadProgress" color="success"></ion-progress-bar>
+    
+        <ion-item *ngIf="isPDF && todo.expenseDoc">
+          <ion-label position="stacked"><a style="color:red;">*</a>Upload PDF</ion-label>
+          <ion-input (change)="loadPdfFromDevice($event)" type="file" accept="application/pdf"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="isImage && todo.expenseDoc">
+          <ion-label position="stacked"><a style="color:red;">*</a>No. of Images</ion-label>
+          <ion-input  [(ngModel)]="todo.numImages" name="numImages" type="number" min=1 max=10 value=1></ion-input>
+        </ion-item>
+          <ion-item *ngIf="todo.numImages >= 1 && isImage">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+            <ion-input (change)="loadImagesFromDevice($event,0)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(0)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[0]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 2">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,1)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(1)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[1]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 3">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,2)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(2)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[2]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 4">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,3)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(3)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[3]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 5">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,4)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(4)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[4]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 6">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,5)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(5)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[5]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 7">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,6)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(6)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[6]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 8">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,7)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(7)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[7]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages >= 9">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,8)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(8)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[8]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+          <ion-item *ngIf="todo.numImages == 10">
+            <ion-label position="stacked"><a style="color:red;">*</a><ion-icon name="camera"></ion-icon>Upload Image</ion-label>
+    
+            <ion-input (change)="loadImagesFromDevice($event,9)" type="file" accept="image/png, image/jpeg"></ion-input>
+            <ion-button expand="block" (click)="captureImage(9)" style="text-transform: capitalize;"><ion-icon name="camera" style="padding-right:10px;"></ion-icon>Capture Image</ion-button>
+            <p style="color:#7d33a8;"  *ngIf="uploadedImages[9]" ><ion-icon name="cloud-done-outline" style="color:#28bd23;padding-right:5px;"></ion-icon>Image Uploaded</p>
+
+          </ion-item>
+    
+
+      </ion-card-content>
+    </ion-card>
+
+  
+          <ion-button *ngIf="todo.narration" ion-button (click)="clear()" color="danger" expand="block">Cancel</ion-button>
+      <ion-button *ngIf="todo.expenseDoc" [disabled]="!todo.date || !todo.format || !todo.narration" ion-button (click)="logForm()" expand="block">Submit</ion-button>
+      <ion-button *ngIf="!todo.expenseDoc" [disabled]="!todo.date || !todo.narration || !todo.amount " ion-button (click)="logForm()" expand="block">Submit</ion-button>
+</ion-col>
+</ion-row>
+</ion-grid>
+    
+
+  
 
   <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>
+
